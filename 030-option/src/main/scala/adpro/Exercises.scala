@@ -57,6 +57,15 @@ object Tree {
     case Branch(l,r) => maximum(l).max(maximum(r))
   }
 
+  // // Not working
+  // def maximum (t: Tree[Int]): Int =  {
+  //   def go(cmaxV: Int, tm: Tree[Int]): Int = tm match{
+  //     case Leaf(n) => cmaxV.max(Leaf(n))
+  //     case Branch(l,r) => go(0, l).max(go(0, r))
+  //   }
+  //   go(0, t)    
+  // }
+
 
   // Exercise 4
   def map[A,B] (t: Tree[A]) (f: A => B): Tree[B] = t match {
@@ -148,15 +157,23 @@ object ExercisesOption {
   // Exercise 9
   def map2[A,B,C] (ao: Option[A], bo: Option[B]) (f: (A,B) => C): Option[C] = ao flatMap (a2 => bo map (b2 => f(a2, b2)))
 
+  //def map2[A,B,C] (ao: Option[A], bo: Option[B]) (f: (A,B) => C): Option[C] = map(f(ao.getOrElse(None), bo.getOrElse(None)))
 
+  // // Not working
   // Exercise 10
   def sequence[A] (aos: List[Option[A]]): Option[List[A]] = 
     aos.foldRight[Option[List[A]]](Some(Nil))((a, b) => map2(a, b)((head, tail) => head::tail))
     // ((head, tail) => head::tail)) like (_ :: _)
 
+    // // Not working
+    //aos.foldRight((Some(Nil))(map(e => Cons(e.getOrElse(Nil)))))
+
 
   // Exercise 11
   def traverse[A,B] (as: List[A]) (f: A => Option[B]): Option[List[B]] = 
     as.foldRight[Option[List[B]]](Some(Nil))((x, y) => map2(f(x), y)(_ :: _))
+
+    // // Not working
+    // flatMap(s => (Cons(s.getOrElse(as.map(f)), Nil)))
 
 }
